@@ -11,8 +11,20 @@ export const projectRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      console.log("input", input);
-      return true;
+      // if this function is called means the user is authenticated and the input type(datatype) is correct(valid)
+      //creating the project in the database
+      const project = await ctx.db.project.create({
+        data: {
+          name: input.name,
+          githubUrl: input.githubUrl,
+          userToProjects: {
+            create: {
+              userId: ctx.user.userId!,
+            },
+          },
+        },
+      });
+      return project;
     }),
 });
 

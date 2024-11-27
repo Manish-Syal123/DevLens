@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { api } from "@/trpc/react";
+import { Loader } from "lucide-react";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -72,7 +73,12 @@ const CreatePage = () => {
               placeholder="Github Token (Optional)"
             />
             <div className="h-4"></div>
-            <Button type="submit">Create Project</Button>
+            <Button type="submit" disabled={createProject.isPending}>
+              {createProject.isPending && (
+                <Loader className="mr-2 animate-spin" />
+              )}
+              Create Project
+            </Button>
           </form>
         </div>
       </div>
