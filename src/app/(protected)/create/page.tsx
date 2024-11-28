@@ -40,7 +40,8 @@ const CreatePage = () => {
   return (
     <div className="flex h-full items-center justify-center gap-12">
       {/* <img src="/create-proj.jpg" alt="create-proj" className="h-50 w-auto"/> */}
-      <img src="/create-proj.jpg" alt="create-proj" className="h-40 w-40" />
+      {/* <img src="/create-proj.jpg" alt="create-proj" className="h-40 w-40" /> */}
+      <img src="/logoSymbol.png" alt="create-proj" className="h-40 w-40" />
       <div>
         <div>
           <h1 className="text-2xl font-semibold">

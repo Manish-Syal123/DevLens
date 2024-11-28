@@ -26,6 +26,20 @@ export const projectRouter = createTRPCRouter({
       });
       return project;
     }),
+  // getting all the projects from the project table based on the userId from the userToProjects table
+  getProjects: protectedProcedure.query(async ({ ctx }) => {
+    const projects = await ctx.db.project.findMany({
+      where: {
+        userToProjects: {
+          some: {
+            userId: ctx.user.userId!,
+          },
+        },
+        deletedAt: null,
+      },
+    });
+    return projects;
+  }),
 });
 
 // so this "protectedProcedure" is used to check if the user is authenticated or not
