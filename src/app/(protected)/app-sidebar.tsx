@@ -73,7 +73,7 @@ export function AppSidebar() {
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton asChild className="rounded-lg">
                     <Link
                       href={item.url}
                       className={cn(
@@ -95,19 +95,19 @@ export function AppSidebar() {
 
         {/* Project Group */}
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          <SidebarGroupLabel>Projects</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {projects?.map((project) => (
                 <SidebarMenuItem key={project.name}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton asChild className="rounded-lg">
                     <div
                       onClick={() => setProjectId(project.id)}
                       className="cursor-pointer"
                     >
                       <div
                         className={cn(
-                          "flex size-6 items-center justify-center rounded-md border bg-white text-sm text-primary",
+                          "flex size-6 items-center justify-center rounded-lg border bg-white text-sm text-primary",
                           {
                             "bg-primary text-white": project.id === projectId,
                           },
@@ -124,7 +124,11 @@ export function AppSidebar() {
               {open && (
                 <SidebarMenuItem>
                   <Link href="/create">
-                    <Button size={"sm"} variant={"outline"} className="w-fit">
+                    <Button
+                      size={"sm"}
+                      variant={"outline"}
+                      className="w-fit rounded-lg border hover:border-primary"
+                    >
                       <Plus />
                       Create Project
                     </Button>

@@ -19,7 +19,7 @@ const SidebarLayout = ({ children }: Props) => {
         <div className="h-4"></div>
         {/* main content */}
         {/* overflow-y-scroll I removed from this right bellow div */}
-        <div className="h-[calc(100vh-6rem)] rounded-md border border-sidebar-border bg-sidebar p-4 shadow">
+        <div className="h-[calc(100vh-6rem)] overflow-x-scroll rounded-md border border-sidebar-border bg-sidebar p-4 shadow">
           {children}
         </div>
       </main>
