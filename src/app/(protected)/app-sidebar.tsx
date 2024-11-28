@@ -107,7 +107,7 @@ export function AppSidebar() {
                     >
                       <div
                         className={cn(
-                          "flex size-6 items-center justify-center rounded-sm border bg-white text-sm text-primary",
+                          "flex size-6 items-center justify-center rounded-md border bg-white text-sm text-primary",
                           {
                             "bg-primary text-white": project.id === projectId,
                           },
