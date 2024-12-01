@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { pollCommits } from "@/lib/github";
 
 export const projectRouter = createTRPCRouter({
   createProject: protectedProcedure
@@ -24,8 +25,10 @@ export const projectRouter = createTRPCRouter({
           },
         },
       });
+      await pollCommits(project.id);
       return project;
     }),
+
   // getting all the projects from the project table based on the userId from the userToProjects table
   getProjects: protectedProcedure.query(async ({ ctx }) => {
     const projects = await ctx.db.project.findMany({
@@ -40,6 +43,19 @@ export const projectRouter = createTRPCRouter({
     });
     return projects;
   }),
+  getCommits: protectedProcedure
+    .input(z.object({ projectId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const commits = await ctx.db.commit.findMany({
+        where: {
+          projectId: input.projectId,
+        },
+      });
+      pollCommits(input.projectId)
+        .then()
+        .catch((err) => console.log(err)); // every time we fetch the comit from the db, we check if there are any new commit in github
+      return commits;
+    }),
 });
 
 // so this "protectedProcedure" is used to check if the user is authenticated or not

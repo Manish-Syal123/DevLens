@@ -47,6 +47,7 @@ export const getCommitHashes = async (
   }));
 };
 
+// main function
 export const pollCommits = async (projectId: string) => {
   const { project, githubUrl } = await fetchProjectGithubUrl(projectId);
   const commitHashes = await getCommitHashes(githubUrl);
@@ -54,6 +55,7 @@ export const pollCommits = async (projectId: string) => {
     projectId,
     commitHashes,
   );
+
   // getting the summary for each commit (list of summaries)
   const summaryResponses = await Promise.allSettled(
     unprocessedCommits.map((commit) => {
@@ -68,8 +70,11 @@ export const pollCommits = async (projectId: string) => {
     return "";
   });
 
-  await db.commit.createMany({
+  // saving the unprocessed commits and their summaries into the database
+  const commits = await db.commit.createMany({
     data: summaries.map((summary, index) => {
+      console.log(`processing commit ${index}`);
+
       return {
         projectId: projectId,
         commitHash: unprocessedCommits[index]!.commitHash,
@@ -81,7 +86,8 @@ export const pollCommits = async (projectId: string) => {
       };
     }),
   });
-  return unprocessedCommits;
+
+  return commits;
 };
 
 // get the .diff of a commit and pass it to ai to summarize
@@ -128,4 +134,4 @@ async function filterUnprocessedCommits(
   return unprocessedCommits;
 }
 
-await pollCommits("cm3zwa0xj0003fh9j441o7zwp").then((res) => console.log(res));
+// await pollCommits("cm3zwa0xj0003fh9j441o7zwp").then((res) => console.log(res));
