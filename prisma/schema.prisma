@@ -2,12 +2,14 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-    provider = "prisma-client-js"
+    provider        = "prisma-client-js"
+    previewFeatures = ["postgresqlExtensions"]
 }
 
 datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
+    provider   = "postgresql"
+    url        = env("DATABASE_URL")
+    extensions = [vector]
 }
 
 model User {
@@ -36,8 +38,9 @@ model Project {
 
     deletedAt DateTime?
 
-    userToProjects UserToProject[]
-    commits        Commit[]
+    userToProjects       UserToProject[]
+    commits              Commit[]
+    sourceCodeEmbeddings SourceCodeEmbedding[]
 }
 
 // many to many relation between User and Project ==> a user can be a part of multiple projects and a project can have multiple users
@@ -70,4 +73,16 @@ model Commit {
     commitDate         DateTime
     // ai summary
     summary            String
+}
+
+model SourceCodeEmbedding {
+    id String @id @default(cuid())
+
+    summaryEmbedding Unsupported("vector(768)")?
+    sourceCode       String
+    fileName         String
+    summary          String
+
+    projectId String
+    project   Project @relation(fields: [projectId], references: [id]) // Establishes a many-to-one relationship, where multiple source code embeddings can belong to a single project. One project(githubUrl or repo) generates multiple(to many) source code embeddings.
 }

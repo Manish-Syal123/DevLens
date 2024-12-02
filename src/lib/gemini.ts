@@ -1,4 +1,5 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { Document } from "@langchain/core/documents";
 
 export const gemini = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
@@ -45,21 +46,28 @@ It is given only as an example of appropriate comments.`,
   return response.response.text();
 };
 
-// Example usage
-// console.log(
-//   await aiSummariseCommit(
-//     `diff --git a/README.md b/README.md
-// index 0dc9ea2..a9644e6 100644
-// --- a/README.md
-// +++ b/README.md
-// @@ -14,6 +14,10 @@ pnpm dev
-// bun dev \`\`\`
+export async function summariseCode(doc: Document) {
+  console.log("getting summary for", doc.metadata.source);
+  const code = doc.pageContent.slice(0, 10000); // limit to 10000 characters
+  const response = await model.generateContent([
+    `You are an intelligent senior software engineer who specialises in onboarding junior software engineers onto projects.`,
+    `You are onboarding a junior software engineer and explaining to them the purpose of the ${doc.metadata.source} file.
+    Here is the code:
+    ---
+    ${code}
+    ---
+    Give a summary no more than 100 words of the code above`,
+  ]);
 
-// +### Check Payment integration Flow
-// +
-// +Open [https://app.eraser.io/workspace/VJpvrpJEdMU9AEjBXPrw](app.eraser.io) with your browser to see the Payment integration Flow.
-// +
-// Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-// You can start editing the page by modifying \`app/page.js\`. The page auto-updates as you edit the file.`,
-//   ),
-// );
+  return response.response.text();
+}
+
+//this will generate 'embedding' for the imput summary of the code
+export async function generateEmbeddings(summary: string) {
+  const model = gemini.getGenerativeModel({
+    model: "text-embedding-004",
+  });
+  const result = await model.embedContent([summary]);
+  const embedding = result.embedding;
+  return embedding.values; // an array of floats(numbers)
+}
