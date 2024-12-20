@@ -1,6 +1,8 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { pollCommits } from "@/lib/github";
+import { indexGithubRepo } from "@/lib/github-loader";
+import { TRPCError } from "@trpc/server";
 
 export const projectRouter = createTRPCRouter({
   createProject: protectedProcedure
@@ -12,8 +14,6 @@ export const projectRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      // if this function is called means the user is authenticated and the input type(datatype) is correct(valid)
-      //creating the project in the database
       const project = await ctx.db.project.create({
         data: {
           name: input.name,
@@ -25,6 +25,7 @@ export const projectRouter = createTRPCRouter({
           },
         },
       });
+      await indexGithubRepo(project.id, input.githubUrl, input.githubToken);
       await pollCommits(project.id);
       return project;
     }),

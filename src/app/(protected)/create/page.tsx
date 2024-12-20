@@ -33,7 +33,11 @@ const CreatePage = () => {
           reset();
         },
         onError: (error) => {
+          // if (error.data?.code === "BAD_REQUEST") {
+          //   toast.error(error.message);
+          // } else {
           toast.error("Failed to create project");
+          //}
         },
       },
     );
