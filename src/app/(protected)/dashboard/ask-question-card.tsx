@@ -1,4 +1,5 @@
 "use client";
+import MDEditor from "@uiw/react-md-editor";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -26,11 +27,12 @@ const AskQuestionCard = () => {
   const [answer, setAnswer] = useState("");
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    setAnswer(""); // Clear the previous answer
+    setFilesReferences([]); // Clear the previous files references
     e.preventDefault();
     if (!project?.id || !question) return;
     setLoading(true);
     setOpen(true);
-    setAnswer(""); // Clear the previous answer
 
     try {
       const { output, filesReferences } = await askQuestion(
@@ -56,7 +58,7 @@ const AskQuestionCard = () => {
   return (
     <>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent>
+        <DialogContent className="sm:max-w-[80vw]">
           <DialogHeader>
             <DialogTitle>
               <Image
@@ -67,11 +69,20 @@ const AskQuestionCard = () => {
               />
             </DialogTitle>
           </DialogHeader>
-          <div>{answer}</div>
-          <h1>Files References</h1>
-          {filesReferences.map((file, index) => {
-            return <span key={index}>{file?.fileName}</span>;
-          })}
+          <MDEditor.Markdown
+            source={answer}
+            className="max-h-[40vh] max-w-[70vw] overflow-auto"
+            style={{
+              backgroundColor: "white",
+              color: "black",
+              borderRadius: "0.5rem",
+            }}
+          />
+          {/* <MDEditor.Markdown source="**This is a test**" /> */}
+          {/* {answer} */}
+          <Button type="button" onClick={() => setOpen(false)}>
+            Close
+          </Button>
         </DialogContent>
       </Dialog>
       <Card className="relative col-span-3">
@@ -86,7 +97,9 @@ const AskQuestionCard = () => {
               placeholder="Which file should I edit to change the home page?"
             />
             <div className="h-4"></div>
-            <Button>Ask DevLens!</Button>
+            <Button type="submit" disabled={loading}>
+              Ask DevLens!
+            </Button>
           </form>
         </CardContent>
       </Card>
