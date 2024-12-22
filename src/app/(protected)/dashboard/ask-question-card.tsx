@@ -10,9 +10,10 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import useProject from "@/hooks/use-project";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { askQuestion } from "./actions";
 import { readStreamableValue } from "ai/rsc";
+import { set } from "date-fns";
 
 const AskQuestionCard = () => {
   const { project } = useProject();
@@ -27,15 +28,28 @@ const AskQuestionCard = () => {
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!project?.id || !question) return;
+    setLoading(true);
     setOpen(true);
+    setAnswer(""); // Clear the previous answer
 
-    const { output, filesReferences } = await askQuestion(question, project.id);
-    setFilesReferences(filesReferences);
+    try {
+      const { output, filesReferences } = await askQuestion(
+        question,
+        project.id,
+      );
 
-    for await (const delta of readStreamableValue(output)) {
-      if (delta) {
-        setAnswer((ans) => ans + delta);
+      setFilesReferences(filesReferences);
+
+      // Stream the answer incrementally
+      for await (const delta of readStreamableValue(output)) {
+        if (delta) {
+          setAnswer((prev) => prev + delta);
+        }
       }
+    } catch (error) {
+      console.error("Error asking question:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -53,6 +67,11 @@ const AskQuestionCard = () => {
               />
             </DialogTitle>
           </DialogHeader>
+          <div>{answer}</div>
+          <h1>Files References</h1>
+          {filesReferences.map((file, index) => {
+            return <span key={index}>{file?.fileName}</span>;
+          })}
         </DialogContent>
       </Dialog>
       <Card className="relative col-span-3">
