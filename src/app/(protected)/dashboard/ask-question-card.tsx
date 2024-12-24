@@ -11,10 +11,11 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import useProject from "@/hooks/use-project";
 import Image from "next/image";
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { askQuestion } from "./actions";
 import { readStreamableValue } from "ai/rsc";
-import { set } from "date-fns";
+import CodeReferences from "./code-references";
+import { Loader } from "lucide-react";
 
 const AskQuestionCard = () => {
   const { project } = useProject();
@@ -58,9 +59,9 @@ const AskQuestionCard = () => {
   return (
     <>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-[80vw]">
+        <DialogContent className="h-lvh w-[73vw] content-center items-center justify-center align-middle sm:max-w-[80vw]">
           <DialogHeader>
-            <DialogTitle>
+            <DialogTitle className="-mt-6 flex items-center justify-center">
               <Image
                 src="/logoSymbol.png"
                 alt="DevLens Logo"
@@ -69,18 +70,32 @@ const AskQuestionCard = () => {
               />
             </DialogTitle>
           </DialogHeader>
-          <MDEditor.Markdown
-            source={answer}
-            className="max-h-[40vh] max-w-[70vw] overflow-auto"
-            style={{
-              backgroundColor: "white",
-              color: "black",
-              borderRadius: "0.5rem",
-            }}
-          />
-          {/* <MDEditor.Markdown source="**This is a test**" /> */}
-          {/* {answer} */}
-          <Button type="button" onClick={() => setOpen(false)}>
+          {loading ? (
+            <div className="flex items-center justify-center">
+              <Loader size={40} className="animate-spin" />
+            </div>
+          ) : (
+            <>
+              <MDEditor.Markdown
+                source={answer}
+                className="max-h-[35vh] max-w-[70vw] overflow-y-auto p-1"
+                style={{
+                  backgroundColor: "white",
+                  color: "black",
+                  borderRadius: "0.5rem",
+                }}
+              />
+              <hr className="border-2" />
+              <CodeReferences filesReferences={filesReferences} />
+            </>
+          )}
+
+          {/* <div className="h-4"></div> */}
+          <Button
+            type="button"
+            onClick={() => setOpen(false)}
+            className="-mb-3"
+          >
             Close
           </Button>
         </DialogContent>
@@ -98,7 +113,11 @@ const AskQuestionCard = () => {
             />
             <div className="h-4"></div>
             <Button type="submit" disabled={loading}>
-              Ask DevLens!
+              {loading ? (
+                <Loader size={4} className="animate-spin" />
+              ) : (
+                "Ask DevLens!"
+              )}
             </Button>
           </form>
         </CardContent>

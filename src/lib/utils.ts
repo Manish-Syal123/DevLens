@@ -8,7 +8,7 @@ export function cn(...inputs: ClassValue[]) {
 // Retry utility function
 export const retry = async <T>(
   fn: () => Promise<T>,
-  retries: number = 3,
+  retries: number = 1,
   delay: number = 1000,
   backoffFactor: number = 2, // Factor by which to increase delay after each failure
 ): Promise<T> => {
