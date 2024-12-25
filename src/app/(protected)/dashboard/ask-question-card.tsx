@@ -18,6 +18,7 @@ import CodeReferences from "./code-references";
 import { Loader, LoaderPinwheel, Save } from "lucide-react";
 import { api } from "@/trpc/react";
 import { toast } from "sonner";
+import useRefetch from "@/hooks/use-refetch";
 
 const AskQuestionCard = () => {
   const { project } = useProject();
@@ -60,6 +61,7 @@ const AskQuestionCard = () => {
     }
   };
 
+  const refetch = useRefetch();
   return (
     <>
       <Dialog open={open} onOpenChange={setOpen}>
@@ -87,8 +89,11 @@ const AskQuestionCard = () => {
                       filesReferences,
                     },
                     {
-                      onSuccess: () =>
-                        toast.success("Answer saved successfully!"),
+                      onSuccess: () => {
+                        toast.success("Answer saved successfully!");
+                        refetch();
+                      },
+
                       onError: () => toast.error("Failed to save answer!"),
                     },
                   )
