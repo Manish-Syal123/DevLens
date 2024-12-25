@@ -57,6 +57,26 @@ export const projectRouter = createTRPCRouter({
         .catch((err) => console.log(err)); // every time we fetch the comit from the db, we check if there are any new commit in github
       return commits;
     }),
+  saveAnswer: protectedProcedure
+    .input(
+      z.object({
+        projectId: z.string(),
+        question: z.string(),
+        answer: z.string(),
+        filesReferences: z.any(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.db.question.create({
+        data: {
+          answer: input.answer,
+          filesReferences: input.filesReferences,
+          projectId: input.projectId,
+          question: input.question,
+          userId: ctx.user.userId!,
+        },
+      });
+    }),
 });
 
 // so this "protectedProcedure" is used to check if the user is authenticated or not

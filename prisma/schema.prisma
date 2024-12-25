@@ -26,6 +26,7 @@ model User {
     credits Int @default(150)
 
     userToProjects UserToProject[]
+    questionsAsked Question[]
 }
 
 model Project {
@@ -41,6 +42,7 @@ model Project {
     userToProjects       UserToProject[]
     commits              Commit[]
     sourceCodeEmbeddings SourceCodeEmbedding[]
+    savedQuestions       Question[]
 }
 
 // many to many relation between User and Project ==> a user can be a part of multiple projects and a project can have multiple users
@@ -85,4 +87,20 @@ model SourceCodeEmbedding {
 
     projectId String
     project   Project @relation(fields: [projectId], references: [id]) // Establishes a many-to-one relationship, where multiple source code embeddings can belong to a single project. One project(githubUrl or repo) generates multiple(to many) source code embeddings.
+}
+
+model Question {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    question String
+    answer   String
+
+    filesReferences Json?
+    projectId       String
+    project         Project @relation(fields: [projectId], references: [id])
+
+    userId String
+    user   User   @relation(fields: [userId], references: [id])
 }
