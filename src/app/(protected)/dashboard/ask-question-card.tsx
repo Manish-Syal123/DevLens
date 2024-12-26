@@ -142,7 +142,7 @@ const AskQuestionCard = () => {
           </Button>
         </DialogContent>
       </Dialog>
-      <Card className="relative col-span-3">
+      <Card className="relative col-span-3 border-2">
         <CardHeader>
           <CardTitle>Ask a Question</CardTitle>
         </CardHeader>
