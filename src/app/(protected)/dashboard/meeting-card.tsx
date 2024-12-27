@@ -1,15 +1,23 @@
 "use client";
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { useDropzone } from "react-dropzone";
-import { uploadFile } from "@/lib/firebase";
+import { uploadFile } from "@/lib/cloudinary";
 import { Presentation, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import { toast } from "sonner";
+import { api } from "@/trpc/react";
+import useProject from "@/hooks/use-project";
+import { useRouter } from "next/navigation";
 
 const MeetingCard = () => {
+  const { project } = useProject();
   const [progress, setProgress] = useState<number>(0);
   const [isUploading, setIsUploading] = useState<boolean>(false);
+  const router = useRouter();
+  const uploadMeeting = api.project.uploadMeeting.useMutation();
+
   const { getRootProps, getInputProps } = useDropzone({
     accept: {
       "audio/*": [".mp3", ".wav", ".m4a", ".flac"],
@@ -17,11 +25,33 @@ const MeetingCard = () => {
     multiple: false,
     maxSize: 50_000_000,
     onDrop: async (acceptedFiles) => {
+      if (!project) return;
       setIsUploading(true);
-      console.log(acceptedFiles);
       const file = acceptedFiles[0];
-      const downloadURL = await uploadFile(file as File, setProgress);
-      window.alert(downloadURL);
+      if (!file) return;
+
+      const downloadURL = (await uploadFile(
+        file as File,
+        setProgress,
+      )) as string;
+
+      uploadMeeting.mutate(
+        {
+          projectId: project.id,
+          meetingUrl: downloadURL,
+          name: file.name,
+        },
+        {
+          onSuccess: () => {
+            toast.success("Meeting uploaded successfully");
+            router.push("/meetings");
+          },
+          onError: () => {
+            toast.error("Failed to upload meeting");
+          },
+        },
+      );
+
       setIsUploading(false);
     },
   });
@@ -58,9 +88,8 @@ const MeetingCard = () => {
             text={`${progress}%`}
             className="size-20"
             styles={buildStyles({
-              textColor: "primary",
-              pathColor: "primary",
-              // trailColor: "#f0f0f0",
+              textColor: "#7c3aed",
+              pathColor: "#7c3aed",
             })}
           />
           <p className="text-center text-sm text-gray-500">
@@ -73,3 +102,5 @@ const MeetingCard = () => {
 };
 
 export default MeetingCard;
+
+//https://res.cloudinary.com/dap5tgvky/video/upload/v1735287219/fojuhhhbfmt94gvn2oa8.mp3
