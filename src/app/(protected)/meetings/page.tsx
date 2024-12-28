@@ -19,7 +19,7 @@ const MeetingsPage = () => {
   return (
     <>
       <MeetingCard />
-      <div className="h6"></div>
+      <div className="h-6"></div>
       <h1 className="text-2xl font-semibold">Meetings</h1>
       {meetings && meetings.length === 0 && <div>No meetings found</div>}
       {isLoading && <div>Loading...</div>}
