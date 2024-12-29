@@ -5,8 +5,16 @@ import React from "react";
 import MeetingCard from "../dashboard/meeting-card";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import { Loader2 } from "lucide-react";
+import { CheckCheck, CircleCheck, Loader2, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { toast } from "sonner";
+import useRefetch from "@/hooks/use-refetch";
 
 const MeetingsPage = () => {
   const { projectId } = useProject();
@@ -16,6 +24,9 @@ const MeetingsPage = () => {
       refetchInterval: 4000,
     },
   );
+
+  const deleteMeeting = api.project.deleteMeeting.useMutation();
+  const refetch = useRefetch();
   return (
     <>
       <MeetingCard />
@@ -47,6 +58,13 @@ const MeetingsPage = () => {
                       <Loader2 size={15} className="animate-spin" />
                     </Badge>
                   )}
+                  {meeting.status === "COMPLETED" && (
+                    <CheckCheck
+                      size={20}
+                      color="green"
+                      className="sm:h-14 sm:w-14 lg:h-5 lg:w-5"
+                    />
+                  )}
                 </div>
               </div>
 
@@ -66,6 +84,32 @@ const MeetingsPage = () => {
                   View Meeting
                 </Button>
               </Link>
+              <TooltipProvider>
+                <Tooltip delayDuration={100}>
+                  <TooltipTrigger
+                    disabled={deleteMeeting.isPending}
+                    onClick={() =>
+                      deleteMeeting.mutate(
+                        { meetingId: meeting.id },
+                        {
+                          onSuccess: () => {
+                            toast.success("Meeting deleted successfully");
+                            refetch();
+                          },
+                          onError: () => {
+                            toast.error("Failed to delete meeting");
+                          },
+                        },
+                      )
+                    }
+                  >
+                    <Trash2 size={20} color="red" />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Delete Meeting</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </div>
           </li>
         ))}
