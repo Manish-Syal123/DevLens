@@ -126,11 +126,11 @@ model Issue {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    start   String //starting time
-    end     String // ending time
-    gist    String // description of the issue
-    heading String // title of the issue
-    summary String // summary of the issue
+    start    String //starting time
+    end      String // ending time
+    gist     String // description of the issue
+    headline String // title of the issue
+    summary  String // summary of the issue
 
     meetingId String
     meeting   Meeting @relation(fields: [meetingId], references: [id])
