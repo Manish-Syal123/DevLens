@@ -62,7 +62,7 @@ const MeetingsPage = () => {
                     <CheckCheck
                       size={20}
                       color="green"
-                      className="sm:h-14 sm:w-14 lg:h-5 lg:w-5"
+                      className="sm:h-10 sm:w-10 lg:h-5 lg:w-5"
                     />
                   )}
                 </div>
