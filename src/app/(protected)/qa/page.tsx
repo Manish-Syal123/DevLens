@@ -12,20 +12,42 @@ import React from "react";
 import AskQuestionCard from "../dashboard/ask-question-card";
 import MDEditor from "@uiw/react-md-editor";
 import CodeReferences from "../dashboard/code-references";
+import { LoaderCircle, Rabbit } from "lucide-react";
 
 const QAPage = () => {
   const { projectId } = useProject();
-  const { data: questions } = api.project.getQuestions.useQuery({ projectId });
+  const { data: questions, isLoading } = api.project.getQuestions.useQuery({
+    projectId,
+  });
 
   const [questionIndex, setQuestionIndex] = React.useState<number>(0);
   const question = questions?.[questionIndex]; // get the question/data at the index
   return (
     <Sheet>
       <AskQuestionCard />
-      <div className="h4"></div>
+      <div className="h-4"></div>
       <h1 className="text-xl font-semibold">Saved Questions</h1>
-      <div className="h2"></div>
+      <div className="h-2"></div>
       <div className="flex flex-col gap-2">
+        {isLoading && (
+          <div className="mt-[6.5rem] flex flex-col items-center justify-center gap-3">
+            <LoaderCircle size={40} className="animate-spin text-primary" />
+            <h1 className="text-xl text-gray-600">
+              DevLens is fetching your saved Questions.
+            </h1>
+            <h1 className="animate-pulse text-lg text-gray-500">
+              Please wait...
+            </h1>
+          </div>
+        )}
+        {questions?.length === 0 && !isLoading && (
+          <div className="mt-[6.5rem] flex flex-col items-center gap-2">
+            <Rabbit size={90} />
+            <span className="text-xl font-bold text-gray-500">
+              No Questions found !
+            </span>
+          </div>
+        )}
         {questions?.map((question, index) => {
           return (
             <React.Fragment key={question.id}>

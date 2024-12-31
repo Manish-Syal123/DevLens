@@ -5,7 +5,14 @@ import React from "react";
 import MeetingCard from "../dashboard/meeting-card";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import { CheckCheck, CircleCheck, Loader2, Trash2 } from "lucide-react";
+import {
+  CheckCheck,
+  CircleCheck,
+  Loader2,
+  LoaderCircle,
+  Rabbit,
+  Trash2,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -32,8 +39,25 @@ const MeetingsPage = () => {
       <MeetingCard />
       <div className="h-6"></div>
       <h1 className="text-2xl font-semibold">Meetings</h1>
-      {meetings && meetings.length === 0 && <div>No meetings found</div>}
-      {isLoading && <div>Loading...</div>}
+      {isLoading && (
+        <div className="mt-[6.5rem] flex flex-col items-center justify-center gap-3">
+          <LoaderCircle size={40} className="animate-spin text-primary" />
+          <h1 className="text-xl text-gray-600">
+            DevLens is fetching your saved Questions.
+          </h1>
+          <h1 className="animate-pulse text-lg text-gray-500">
+            Please wait...
+          </h1>
+        </div>
+      )}
+      {meetings?.length === 0 && !isLoading && (
+        <div className="mt-[6rem] flex flex-col items-center gap-2">
+          <Rabbit size={90} />
+          <span className="text-xl font-bold text-gray-500">
+            No Meeting found !
+          </span>
+        </div>
+      )}
       <ul className="divide-y divide-gray-200">
         {meetings?.map((meeting) => (
           <li

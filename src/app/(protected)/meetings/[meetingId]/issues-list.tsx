@@ -15,7 +15,7 @@ import {
   DialogContent,
 } from "@/components/ui/dialog";
 import { api, RouterOutputs } from "@/trpc/react";
-import { VideoIcon } from "lucide-react";
+import { LoaderCircle, Rabbit, VideoIcon } from "lucide-react";
 import React from "react";
 
 type Props = {
@@ -29,7 +29,25 @@ const IssuesList = ({ meetingId }: Props) => {
       refetchInterval: 4000,
     },
   );
-  if (isLoading || !meeting) return <div>Loading...</div>;
+  if (isLoading || !meeting)
+    return (
+      <div className="mt-[6.5rem] flex flex-col items-center justify-center gap-3">
+        <LoaderCircle size={40} className="animate-spin text-primary" />
+        <h1 className="text-xl text-gray-600">
+          DevLens is fetching details of This Meeting.
+        </h1>
+        <h1 className="animate-pulse text-lg text-gray-500">Please wait...</h1>
+      </div>
+    );
+  if (!meeting.issues.length && !isLoading)
+    return (
+      <div className="mt-[6.5rem] flex flex-col items-center gap-2">
+        <Rabbit size={90} />
+        <span className="text-xl font-bold text-gray-500">
+          No Issues found !
+        </span>
+      </div>
+    );
   return (
     <>
       <div className="p-8">

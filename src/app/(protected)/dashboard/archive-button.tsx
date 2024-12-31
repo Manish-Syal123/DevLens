@@ -28,7 +28,8 @@ const ArchiveButton = () => {
         <Button
           size={"sm"}
           disabled={archiveProject.isPending}
-          variant={"destructive"}
+          // variant={"destructive"}
+          className="border bg-white text-destructive hover:bg-slate-50"
         >
           {archiveProject.isPending ? (
             <>

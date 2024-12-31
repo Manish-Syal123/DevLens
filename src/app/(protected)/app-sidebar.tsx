@@ -104,7 +104,7 @@ export function AppSidebar() {
             <SidebarMenu>
               {isLoading &&
                 [1, 2, 3, 4].map((item) => <Skeletonloading key={item} />)}
-              {projects?.length === 0 && (
+              {projects?.length === 0 && !isLoading && (
                 <div className="flex flex-col items-center gap-2">
                   <Rabbit size={50} />
                   <span className="text-lg text-gray-500">

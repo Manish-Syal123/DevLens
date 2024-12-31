@@ -2,16 +2,38 @@
 import useProject from "@/hooks/use-project";
 import { cn } from "@/lib/utils";
 import { api } from "@/trpc/react";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, LoaderCircle, Rabbit } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
 const CommitLog = () => {
   const { project, projectId } = useProject();
-  const { data: commits } = api.project.getCommits.useQuery({ projectId });
+  const { data: commits, isLoading } = api.project.getCommits.useQuery({
+    projectId,
+  });
+
   return (
     <>
       <ul className="space-y-6">
+        {isLoading && (
+          <div className="mt-[6.5rem] flex flex-col items-center justify-center gap-3">
+            <LoaderCircle size={40} className="animate-spin text-primary" />
+            <h1 className="text-xl text-gray-600">
+              DevLens is fetching commits-log for this project.
+            </h1>
+            <h1 className="animate-pulse text-lg text-gray-500">
+              Please wait...
+            </h1>
+          </div>
+        )}
+        {commits?.length === 0 && !isLoading && (
+          <div className="mt-[6.5rem] flex flex-col items-center gap-2">
+            <Rabbit size={90} />
+            <span className="text-xl font-bold text-gray-500">
+              No Questions found !
+            </span>
+          </div>
+        )}
         {commits?.map((commit, commitIdx) => {
           return (
             <li key={commitIdx} className="relative flex gap-x-4">
