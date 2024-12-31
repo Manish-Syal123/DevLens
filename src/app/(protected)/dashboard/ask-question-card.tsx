@@ -19,6 +19,7 @@ import { Loader, LoaderPinwheel, Save } from "lucide-react";
 import { api } from "@/trpc/react";
 import { toast } from "sonner";
 import useRefetch from "@/hooks/use-refetch";
+import { cn } from "@/lib/utils";
 
 const AskQuestionCard = () => {
   const { project } = useProject();
@@ -79,7 +80,11 @@ const AskQuestionCard = () => {
               <Button
                 disabled={saveAnswer.isPending}
                 variant={"outline"}
-                className="hover:border-2 hover:border-primary"
+                // className="hover:border-2 hover:border-primary"
+                className={cn(
+                  "hover:border-2 hover:border-primary",
+                  loading && "hidden",
+                )}
                 onClick={() =>
                   saveAnswer.mutate(
                     {
@@ -113,8 +118,14 @@ const AskQuestionCard = () => {
             </div>
           </DialogHeader>
           {loading ? (
-            <div className="flex items-center justify-center">
+            <div className="flex flex-col items-center justify-center gap-3">
               <Loader size={40} className="animate-spin" />
+              <h1 className="font-sans text-xl">
+                DevLens is generating a response to your query.
+              </h1>
+              <h1 className="animate-pulse text-lg text-gray-500">
+                Please wait...
+              </h1>
             </div>
           ) : (
             <>

@@ -22,6 +22,7 @@ import {
   LayoutDashboard,
   Plus,
   Presentation,
+  Rabbit,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -103,6 +104,14 @@ export function AppSidebar() {
             <SidebarMenu>
               {isLoading &&
                 [1, 2, 3, 4].map((item) => <Skeletonloading key={item} />)}
+              {projects?.length === 0 && (
+                <div className="flex flex-col items-center gap-2">
+                  <Rabbit size={50} />
+                  <span className="text-lg text-gray-500">
+                    No project found
+                  </span>
+                </div>
+              )}
               {projects?.map((project) => (
                 <SidebarMenuItem key={project.name}>
                   <SidebarMenuButton asChild className="rounded-lg">
