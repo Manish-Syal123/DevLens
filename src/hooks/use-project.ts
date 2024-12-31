@@ -4,7 +4,7 @@ import React from "react";
 import { useLocalStorage } from "usehooks-ts";
 
 const useProject = () => {
-  const { data: projects } = api.project.getProjects.useQuery(); // {data: project} => data is returened by useQuery from TCRP and :project is just an alias(rename) of data for better readability, useQuery() returns => data:[], isLoading, isError, refetch
+  const { data: projects, isLoading } = api.project.getProjects.useQuery(); // {data: project} => data is returened by useQuery from TCRP and :project is just an alias(rename) of data for better readability, useQuery() returns => data:[], isLoading, isError, refetch
   const [projectId, setProjectId] = useLocalStorage("devlens-projectId", "");
   const project = projects?.find((project) => project.id === projectId);
   return {
@@ -12,6 +12,7 @@ const useProject = () => {
     project, // return the selected project based on the projectId
     projectId,
     setProjectId,
+    isLoading,
   };
 };
 

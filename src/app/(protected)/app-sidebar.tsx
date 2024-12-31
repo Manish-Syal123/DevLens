@@ -13,6 +13,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { Skeleton } from "@/components/ui/skeleton";
 import useProject from "@/hooks/use-project";
 import { cn } from "@/lib/utils";
 import {
@@ -52,7 +53,7 @@ const items = [
 export function AppSidebar() {
   const pathname = usePathname();
   const { open } = useSidebar();
-  const { projects, projectId, setProjectId } = useProject(); // contains all the projects of logged in user
+  const { projects, projectId, setProjectId, isLoading } = useProject(); // contains all the projects of logged in user
 
   return (
     <Sidebar collapsible="icon" variant="floating">
@@ -71,6 +72,8 @@ export function AppSidebar() {
           <SidebarGroupLabel>Application</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
+              {/* {isLoading &&
+                [1, 2, 3, 4].map((item) => <Skeletonloading key={item} />)} */}
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild className="rounded-lg">
@@ -98,6 +101,8 @@ export function AppSidebar() {
           <SidebarGroupLabel>Projects</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
+              {isLoading &&
+                [1, 2, 3, 4].map((item) => <Skeletonloading key={item} />)}
               {projects?.map((project) => (
                 <SidebarMenuItem key={project.name}>
                   <SidebarMenuButton asChild className="rounded-lg">
@@ -120,7 +125,7 @@ export function AppSidebar() {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
-              <div className="h2"></div>
+              <div className="h-2"></div>
               {open && (
                 <SidebarMenuItem>
                   <Link href="/create">
@@ -142,3 +147,15 @@ export function AppSidebar() {
     </Sidebar>
   );
 }
+
+const Skeletonloading = () => {
+  return (
+    <div className="my-1.5 flex items-center space-x-4">
+      <Skeleton className="h-8 w-8 rounded-full" />
+      <div className="space-y-2">
+        <Skeleton className="h-3 w-36 rounded-lg" />
+        <Skeleton className="h-3 w-24 rounded-lg" />
+      </div>
+    </div>
+  );
+};

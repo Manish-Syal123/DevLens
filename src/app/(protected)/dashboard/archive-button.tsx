@@ -24,7 +24,7 @@ const ArchiveButton = () => {
   const refetch = useRefetch();
   return (
     <AlertDialog>
-      <AlertDialogTrigger>
+      <AlertDialogTrigger asChild>
         <Button
           size={"sm"}
           disabled={archiveProject.isPending}
