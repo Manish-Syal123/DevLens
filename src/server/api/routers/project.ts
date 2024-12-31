@@ -169,6 +169,16 @@ export const projectRouter = createTRPCRouter({
         },
       });
     }),
+  getMyCredits: protectedProcedure.query(async ({ ctx }) => {
+    return await ctx.db.user.findUnique({
+      where: {
+        id: ctx.user.userId!,
+      },
+      select: {
+        credits: true,
+      },
+    });
+  }),
 });
 
 // so this "protectedProcedure" is used to check if the user is authenticated or not
