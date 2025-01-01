@@ -1,25 +1,23 @@
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
+"use client";
+import Lottie from "lottie-react";
+import EmptyWorkspace from "../../public/EmptyWorkspace.json";
 
-export default async function Home() {
+export default function Home() {
   return (
     <>
-      {/* <Link href="/dashboard">
-        <Button>Dashboard</Button>
-      </Link> */}
-
       {/* Hero Section */}
       <div className="bg-white">
-        <header className="bg-[#FCF8F1] bg-opacity-30">
+        <header className="relative z-20 bg-[#FCF8F1] bg-opacity-30">
           <div className="mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex h-16 items-center justify-between lg:h-20">
               <div className="flex-shrink-0">
                 <a href="#" title="" className="flex">
-                  <img
+                  {/* <img
                     className="h-8 w-auto"
                     src="https://cdn.rareblocks.xyz/collection/celebration/images/logo.svg"
                     alt=""
-                  />
+                  /> */}
+                  <img className="h-14 w-auto" src="/logwithname.png" alt="" />
                 </a>
               </div>
 
@@ -101,7 +99,7 @@ export default async function Home() {
               <a
                 href="/dashboard"
                 title=""
-                className="hidden items-center justify-center rounded-full bg-black px-5 py-2.5 text-base font-semibold text-white transition-all duration-200 hover:bg-yellow-300 hover:text-black focus:bg-yellow-300 focus:text-black lg:inline-flex"
+                className="hidden items-center justify-center rounded-full bg-primary px-5 py-2.5 text-base font-semibold text-white transition-all duration-200 hover:bg-blue-600 focus:bg-yellow-300 focus:text-black lg:inline-flex"
                 role="button"
               >
                 {" "}
@@ -111,24 +109,26 @@ export default async function Home() {
           </div>
         </header>
 
-        <section className="bg-[#FCF8F1] bg-opacity-30 py-10 sm:py-16 lg:py-24">
+        {/* Hero Section */}
+        <section className="-mt-4 bg-[#FCF8F1] bg-opacity-30 py-10 sm:py-16 lg:py-24">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
+            <div className="grid grid-cols-1 items-center gap-12 lg:-mt-16 lg:grid-cols-2">
               <div>
-                <p className="text-base font-semibold uppercase tracking-wider text-blue-600">
-                  A social media for learners
+                <p className="text-base font-semibold uppercase tracking-wider text-primary">
+                  AI-powered project management tool for developers and teams.
                 </p>
-                <h1 className="mt-4 text-4xl font-bold text-black sm:text-6xl lg:mt-8 xl:text-8xl">
-                  Connect & learn from the experts
+                <h1 className="mt-4 text-2xl font-bold text-black sm:text-2xl lg:mt-8 xl:text-6xl">
+                  Collaborate, analyze, and unlock insights with DevLens
                 </h1>
                 <p className="mt-4 text-base text-black sm:text-xl lg:mt-8">
-                  Grow your career fast with right mentor.
+                  Streamline your projects with AI. Gain deeper understanding
+                  effortlessly.
                 </p>
 
                 <a
                   href="/sign-up"
                   title=""
-                  className="mt-8 inline-flex items-center rounded-full bg-yellow-300 px-6 py-4 font-semibold text-black transition-all duration-200 hover:bg-yellow-400 focus:bg-yellow-400 lg:mt-16"
+                  className="mt-8 inline-flex items-center rounded-full bg-primary px-6 py-4 font-semibold text-white transition-all duration-200 hover:bg-[#c67eff] focus:bg-blue-600 lg:mt-16"
                   role="button"
                 >
                   Join for free
@@ -148,7 +148,7 @@ export default async function Home() {
                   </svg>
                 </a>
 
-                <p className="mt-5 text-gray-600">
+                <p className="relative z-10 mt-5 text-gray-600">
                   Already joined us?{" "}
                   <a
                     href="/sign-in"
@@ -161,10 +161,15 @@ export default async function Home() {
               </div>
 
               <div>
-                <img
+                {/* <img
                   className="w-full"
                   src="https://cdn.rareblocks.xyz/collection/celebration/images/hero/1/hero-img.png"
                   alt=""
+                /> */}
+                <Lottie
+                  animationData={EmptyWorkspace}
+                  loop={true}
+                  className="-mt-20 h-[40rem] w-[50rem] items-center justify-center border-2 lg:h-[50rem] lg:w-[50rem]"
                 />
               </div>
             </div>
@@ -173,7 +178,7 @@ export default async function Home() {
       </div>
 
       {/* Features Section */}
-      <section className="bg-gray-50 py-10 sm:py-16 lg:py-24">
+      <section className="bg-gray-50 py-10 sm:py-16 lg:-mt-28 lg:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-xl text-center">
             <p className="text-sm font-semibold uppercase tracking-widest text-blue-600">
@@ -181,7 +186,7 @@ export default async function Home() {
             </p>
 
             <h2 className="mt-6 text-3xl font-bold leading-tight text-black sm:text-4xl lg:text-5xl">
-              Celebration helps you build beautiful website
+              Create. Customize. Celebrate your stunning project.
             </h2>
           </div>
 
@@ -204,7 +209,7 @@ export default async function Home() {
                 </svg>
                 <div className="ml-5">
                   <h3 className="text-xl font-semibold text-black">
-                    Simply Copy & Paste
+                    Quick, Simple & Effortless integration.
                   </h3>
                   <p className="mt-3 text-base text-gray-600">
                     Amet minim mollit non deserunt ullamco est sit aliqua dolor
@@ -230,7 +235,7 @@ export default async function Home() {
                 </svg>
                 <div className="ml-5">
                   <h3 className="text-xl font-semibold text-black">
-                    Easy to Customize
+                    Flexible & User-friendly
                   </h3>
                   <p className="mt-3 text-base text-gray-600">
                     Amet minim mollit non deserunt ullamco est sit aliqua dolor
@@ -256,7 +261,7 @@ export default async function Home() {
                 </svg>
                 <div className="ml-5">
                   <h3 className="text-xl font-semibold text-black">
-                    Made with TailwindCSS
+                    Made with Github API's
                   </h3>
                   <p className="mt-3 text-base text-gray-600">
                     Amet minim mollit non deserunt ullamco est sit aliqua dolor
@@ -350,7 +355,7 @@ export default async function Home() {
                 </svg>
               </div>
               <h3 className="mt-8 text-lg font-semibold text-black">
-                Light & Dark Version
+                Light & weight
               </h3>
               <p className="mt-4 text-sm text-gray-600">
                 Amet minim mollit non deserunt ullamco est sit aliqua dolor do
@@ -376,7 +381,7 @@ export default async function Home() {
                 </svg>
               </div>
               <h3 className="mt-8 text-lg font-semibold text-black">
-                Filter Blocks
+                Seamless Meetings
               </h3>
               <p className="mt-4 text-sm text-gray-600">
                 Amet minim mollit non deserunt ullamco est sit aliqua dolor do
@@ -393,12 +398,12 @@ export default async function Home() {
           <div className="mx-auto max-w-2xl text-center">
             <h2 className="text-3xl font-bold leading-tight text-gray-800 sm:text-4xl lg:text-5xl">
               Trusted by <span className="text-blue-600">30k+</span> world
-              className companies & design teams
+              className companies & developers.
             </h2>
           </div>
 
           <div className="mx-auto mt-8 grid max-w-xl grid-cols-1 gap-x-6 gap-y-6 text-center sm:mt-12 lg:mt-20 lg:max-w-full lg:grid-cols-3 xl:gap-x-12">
-            <div className="overflow-hidden rounded-md bg-white shadow">
+            <div className="overflow-hidden rounded-lg bg-white shadow">
               <div className="px-8 py-12">
                 <div className="relative mx-auto h-24 w-24">
                   <img
@@ -433,7 +438,7 @@ export default async function Home() {
               </div>
             </div>
 
-            <div className="overflow-hidden rounded-md bg-white shadow">
+            <div className="overflow-hidden rounded-lg bg-white shadow">
               <div className="px-8 py-12">
                 <div className="relative mx-auto h-24 w-24">
                   <img
@@ -468,7 +473,7 @@ export default async function Home() {
               </div>
             </div>
 
-            <div className="overflow-hidden rounded-md bg-white shadow">
+            <div className="overflow-hidden rounded-lg bg-white shadow">
               <div className="px-8 py-12">
                 <div className="relative mx-auto h-24 w-24">
                   <img
@@ -636,7 +641,7 @@ export default async function Home() {
                   </span>
                 </div>
                 <h3 className="mt-6 text-xl font-semibold leading-tight text-black md:mt-10">
-                  Build your website
+                  Analyse your codebase
                 </h3>
                 <p className="mt-4 text-base text-gray-600">
                   Amet minim mollit non deserunt ullamco est sit aliqua dolor do
@@ -652,7 +657,7 @@ export default async function Home() {
                   </span>
                 </div>
                 <h3 className="mt-6 text-xl font-semibold leading-tight text-black md:mt-10">
-                  Release & Launch
+                  Chat with your repos
                 </h3>
                 <p className="mt-4 text-base text-gray-600">
                   Amet minim mollit non deserunt ullamco est sit aliqua dolor do
@@ -1509,11 +1514,7 @@ export default async function Home() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 gap-x-12 gap-y-16 md:col-span-3 lg:grid-cols-6">
             <div className="col-span-2 md:col-span-3 lg:col-span-2 lg:pr-8">
-              <img
-                className="h-9 w-auto"
-                src="https://cdn.rareblocks.xyz/collection/celebration/images/logo.svg"
-                alt=""
-              />
+              <img className="h-14 w-auto" src="/logwithname.png" alt="" />
 
               <p className="mt-7 text-base leading-relaxed text-gray-600">
                 Amet minim mollit non deserunt ullamco est sit aliqua dolor do
@@ -1576,8 +1577,9 @@ export default async function Home() {
 
                 <li>
                   <a
-                    href="#"
-                    title=""
+                    href="https://github.com/Manish-Syal123"
+                    target="_blank"
+                    title="Github Profile"
                     className="flex h-7 w-7 items-center justify-center rounded-full bg-gray-800 text-white transition-all duration-200 hover:bg-blue-600 focus:bg-blue-600"
                   >
                     <svg
@@ -1733,7 +1735,8 @@ export default async function Home() {
           <hr className="mb-10 mt-16 border-gray-200" />
 
           <p className="text-center text-sm text-gray-600">
-            © Copyright 2021, All Rights Reserved by Postcraft
+            © Copyright {new Date().getFullYear()}, All Rights Reserved by
+            Manish Syal
           </p>
         </div>
       </section>
