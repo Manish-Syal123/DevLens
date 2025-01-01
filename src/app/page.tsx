@@ -4,7 +4,7 @@ import EmptyWorkspace from "../../public/EmptyWorkspace.json";
 
 export default function Home() {
   return (
-    <>
+    <div className="overflow-x-hidden">
       {/* Hero Section */}
       <div className="bg-white">
         <header className="relative z-20 bg-[#FCF8F1] bg-opacity-30">
@@ -169,7 +169,7 @@ export default function Home() {
                 <Lottie
                   animationData={EmptyWorkspace}
                   loop={true}
-                  className="-mt-20 h-[40rem] w-[50rem] items-center justify-center border-2 lg:h-[50rem] lg:w-[50rem]"
+                  className="-mt-20 h-[40rem] w-[50rem] items-center justify-center lg:h-[50rem] lg:w-[50rem]"
                 />
               </div>
             </div>
@@ -1740,6 +1740,6 @@ export default function Home() {
           </p>
         </div>
       </section>
-    </>
+    </div>
   );
 }
