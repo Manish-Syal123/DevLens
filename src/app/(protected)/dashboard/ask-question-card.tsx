@@ -15,7 +15,12 @@ import React, { useState } from "react";
 import { askQuestion } from "./actions";
 import { readStreamableValue } from "ai/rsc";
 import CodeReferences from "./code-references";
-import { Loader, LoaderPinwheel, Save } from "lucide-react";
+import {
+  Loader,
+  LoaderPinwheel,
+  MessageCircleQuestion,
+  Save,
+} from "lucide-react";
 import { api } from "@/trpc/react";
 import { toast } from "sonner";
 import useRefetch from "@/hooks/use-refetch";
@@ -169,7 +174,9 @@ const AskQuestionCard = () => {
               {loading ? (
                 <Loader size={4} className="animate-spin" />
               ) : (
-                "Ask DevLens!"
+                <>
+                  Ask DevLens <MessageCircleQuestion className="ml-1" />
+                </>
               )}
             </Button>
           </form>

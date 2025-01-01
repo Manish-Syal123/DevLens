@@ -1,7 +1,8 @@
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { UserButton } from "@clerk/nextjs";
-import React from "react";
+import React, { Suspense } from "react";
 import { AppSidebar } from "./app-sidebar";
+import Loading from "./loading";
 
 type Props = {
   children: React.ReactNode;
@@ -19,9 +20,11 @@ const SidebarLayout = ({ children }: Props) => {
         <div className="h-4"></div>
         {/* main content */}
         {/* overflow-y-scroll I removed from this right bellow div */}
-        <div className="h-[calc(100vh-6rem)] overflow-x-scroll rounded-md border border-sidebar-border bg-sidebar p-4 shadow">
-          {children}
-        </div>
+        <Suspense fallback={<Loading />}>
+          <div className="h-[calc(100vh-6rem)] overflow-y-scroll rounded-md border border-sidebar-border bg-sidebar p-4 shadow">
+            {children}
+          </div>
+        </Suspense>
       </main>
     </SidebarProvider>
   );

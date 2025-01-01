@@ -1,6 +1,6 @@
 "use client";
 import useProject from "@/hooks/use-project";
-import { ExternalLink, Github } from "lucide-react";
+import { ExternalLink, Github, PlusIcon } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import CommitLog from "./commit-log";
@@ -11,9 +11,33 @@ const InviteButton = dynamic(() => import("./invite-button"), { ssr: false });
 import TeamMembers from "./team-members";
 import { cn } from "@/lib/utils";
 import dynamic from "next/dynamic";
+import Lottie from "lottie-react";
+import lottieworkspace from "../../../../public/lottieworkspace.json";
+import { Button } from "@/components/ui/button";
 
 const DashboardPage = () => {
   const { project } = useProject();
+
+  if (!project) {
+    return (
+      <div className="mb-10 flex flex-col items-center justify-center">
+        <Lottie
+          animationData={lottieworkspace}
+          loop={true}
+          alt="workspace"
+          className="h-96 w-svw"
+        />
+        <h2 className="my-6 text-xl font-bold">
+          ⚡ Create New Project to Get Started ⚡
+        </h2>
+        <Link href="/create">
+          <Button className="my-3">
+            <PlusIcon className="mr-1" /> New Project
+          </Button>
+        </Link>
+      </div>
+    );
+  }
   return (
     <div className={cn(!project && "hidden")}>
       {/* {project?.id} */}
