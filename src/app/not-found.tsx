@@ -2,7 +2,6 @@
 import Lottie from "lottie-react";
 import Link from "next/link";
 import notfound from "../../public/notfound.json";
-import { Button } from "@/components/ui/button";
 import { ArrowLeftCircle } from "lucide-react";
 
 export default function NotFound() {
@@ -21,15 +20,15 @@ export default function NotFound() {
           Uh-oh!
         </p>
 
-        <p className="mt-4 text-gray-500">We can't find that page.</p>
+        <p className="mt-4 text-lg text-gray-500">
+          We can't find that page. Please try again later.
+        </p>
 
         <Link
           href="/dashboard"
-          className="mt-6 inline-block rounded bg-indigo-600 px-5 py-3 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring"
+          className="mt-6 flex items-center justify-center rounded bg-indigo-600 px-5 py-2 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring"
         >
-          <Button>
-            <ArrowLeftCircle className="mr-1" /> Go Home
-          </Button>
+          <ArrowLeftCircle className="mr-3" /> Go Home
         </Link>
       </div>
     </div>

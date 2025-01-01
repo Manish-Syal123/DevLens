@@ -6,6 +6,8 @@ import { type Metadata } from "next";
 
 import { TRPCReactProvider } from "@/trpc/react";
 import { Toaster } from "sonner";
+import { Suspense } from "react";
+import Loading from "./loading";
 
 export const metadata: Metadata = {
   title: "DevLens 🔍",
@@ -20,8 +22,10 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en" className={`${GeistSans.variable}`}>
         <body>
-          <TRPCReactProvider>{children}</TRPCReactProvider>
-          <Toaster richColors />
+          <Suspense fallback={<Loading />}>
+            <TRPCReactProvider>{children}</TRPCReactProvider>
+            <Toaster richColors />
+          </Suspense>
         </body>
       </html>
     </ClerkProvider>
