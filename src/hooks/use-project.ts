@@ -1,6 +1,4 @@
 import { api } from "@/trpc/react";
-import { set } from "date-fns";
-import React from "react";
 import { useLocalStorage } from "usehooks-ts";
 
 const useProject = () => {

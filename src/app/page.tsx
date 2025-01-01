@@ -126,7 +126,7 @@ export default async function Home() {
                 </p>
 
                 <a
-                  href="#"
+                  href="/sign-up"
                   title=""
                   className="mt-8 inline-flex items-center rounded-full bg-yellow-300 px-6 py-4 font-semibold text-black transition-all duration-200 hover:bg-yellow-400 focus:bg-yellow-400 lg:mt-16"
                   role="button"
@@ -151,7 +151,7 @@ export default async function Home() {
                 <p className="mt-5 text-gray-600">
                   Already joined us?{" "}
                   <a
-                    href="#"
+                    href="/sign-in"
                     title=""
                     className="text-black transition-all duration-200 hover:underline"
                   >

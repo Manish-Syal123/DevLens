@@ -1,6 +1,5 @@
 "use client";
 import useProject from "@/hooks/use-project";
-import { useUser } from "@clerk/nextjs";
 import { ExternalLink, Github } from "lucide-react";
 import Link from "next/link";
 import React from "react";
@@ -8,13 +7,15 @@ import CommitLog from "./commit-log";
 import AskQuestionCard from "./ask-question-card";
 import MeetingCard from "./meeting-card";
 import ArchiveButton from "./archive-button";
-import InviteButton from "./invite-button";
+const InviteButton = dynamic(() => import("./invite-button"), { ssr: false });
 import TeamMembers from "./team-members";
+import { cn } from "@/lib/utils";
+import dynamic from "next/dynamic";
 
 const DashboardPage = () => {
   const { project } = useProject();
   return (
-    <div>
+    <div className={cn(!project && "hidden")}>
       {/* {project?.id} */}
       <div className="flex flex-wrap items-center justify-between gap-y-4">
         {/* Github Link */}
