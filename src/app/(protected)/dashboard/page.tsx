@@ -1,6 +1,6 @@
 "use client";
 import useProject from "@/hooks/use-project";
-import { ExternalLink, Github, PlusIcon } from "lucide-react";
+import { ExternalLink, Github, Loader, PlusIcon } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import CommitLog from "./commit-log";
@@ -14,9 +14,10 @@ import dynamic from "next/dynamic";
 import Lottie from "lottie-react";
 import lottieworkspace from "../../../../public/lottieworkspace.json";
 import { Button } from "@/components/ui/button";
+import Loading from "../loading";
 
 const DashboardPage = () => {
-  const { project } = useProject();
+  const { project, isLoading } = useProject();
 
   if (!project) {
     return (
@@ -37,6 +38,9 @@ const DashboardPage = () => {
         </Link>
       </div>
     );
+  }
+  if (isLoading) {
+    return <Loading />;
   }
   return (
     <div className={cn(!project && "hidden")}>

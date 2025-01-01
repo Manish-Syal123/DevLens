@@ -26,7 +26,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
 
 const items = [
   {
@@ -59,7 +59,10 @@ export function AppSidebar() {
   return (
     <Sidebar collapsible="icon" variant="floating">
       <SidebarHeader>
-        <div className="flex items-center gap-2">
+        <div
+          className="flex cursor-context-menu items-center gap-2"
+          onClick={() => redirect("/")}
+        >
           {/* <Image src="/logwithname.png" alt="logo" width={100} height={100} /> */}
           <Image src="/logoSymbol.png" alt="logo" width={55} height={55} />
           {open && (

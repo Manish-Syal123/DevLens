@@ -1,8 +1,58 @@
 "use client";
 import Lottie from "lottie-react";
 import EmptyWorkspace from "../../public/EmptyWorkspace.json";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarProvider,
+} from "@/components/ui/sidebar";
+import {
+  CircleCheck,
+  Gem,
+  LayoutDashboard,
+  Settings,
+  Waypoints,
+  X,
+} from "lucide-react";
+import React from "react";
+import { cn } from "@/lib/utils";
+
+const items = [
+  {
+    title: "Dashboard",
+    url: "/dashboard",
+    icon: LayoutDashboard,
+  },
+  {
+    title: "Features",
+    url: "#",
+    icon: Settings,
+  },
+  {
+    title: "Solutions",
+    url: "#",
+    icon: CircleCheck,
+  },
+  {
+    title: "Resources",
+    url: "#",
+    icon: Waypoints,
+  },
+  {
+    title: "Pricing",
+    url: "#",
+    icon: Gem,
+  },
+];
 
 export default function Home() {
+  const [open, setOpen] = React.useState(false);
   return (
     <div className="overflow-x-hidden">
       {/* Hero Section */}
@@ -23,7 +73,11 @@ export default function Home() {
 
               <button
                 type="button"
-                className="inline-flex rounded-md p-2 text-black transition-all duration-200 hover:bg-gray-100 focus:bg-gray-100 lg:hidden"
+                onClick={() => setOpen(!open)}
+                className={cn(
+                  "inline-flex items-end justify-end rounded-md p-2 text-black transition-all duration-200 hover:bg-gray-100 focus:bg-gray-100 lg:hidden",
+                  open && "hidden",
+                )}
               >
                 {/* <!-- Menu open: "hidden", Menu closed: "block" --> */}
                 <svg
@@ -40,23 +94,38 @@ export default function Home() {
                     d="M4 8h16M4 16h16"
                   ></path>
                 </svg>
-
-                {/* <!-- Menu open: "block", Menu closed: "hidden" --> */}
-                <svg
-                  className="hidden h-6 w-6"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M6 18L18 6M6 6l12 12"
-                  ></path>
-                </svg>
               </button>
+              <div className="flex justify-end">
+                <SidebarProvider
+                  open={open}
+                  onOpenChange={setOpen}
+                  className={cn("lg:hidden", open && "block justify-end")}
+                >
+                  <Sidebar>
+                    <SidebarContent>
+                      <SidebarGroup>
+                        <SidebarGroupLabel className="flex cursor-pointer justify-end">
+                          <X onClick={() => setOpen(false)} />
+                        </SidebarGroupLabel>
+                        <SidebarGroupContent>
+                          <SidebarMenu>
+                            {items.map((item) => (
+                              <SidebarMenuItem key={item.title}>
+                                <SidebarMenuButton asChild>
+                                  <a href={item.url}>
+                                    <item.icon />
+                                    <span>{item.title}</span>
+                                  </a>
+                                </SidebarMenuButton>
+                              </SidebarMenuItem>
+                            ))}
+                          </SidebarMenu>
+                        </SidebarGroupContent>
+                      </SidebarGroup>
+                    </SidebarContent>
+                  </Sidebar>
+                </SidebarProvider>
+              </div>
 
               <div className="hidden lg:flex lg:items-center lg:justify-center lg:space-x-10">
                 <a
@@ -169,7 +238,7 @@ export default function Home() {
                 <Lottie
                   animationData={EmptyWorkspace}
                   loop={true}
-                  className="-mt-20 h-[40rem] w-[50rem] items-center justify-center lg:h-[50rem] lg:w-[50rem]"
+                  className="-mt-20 h-[30rem] w-[26rem] items-center justify-center md:h-[40rem] md:w-[50rem] lg:h-[50rem] lg:w-[50rem]"
                 />
               </div>
             </div>
