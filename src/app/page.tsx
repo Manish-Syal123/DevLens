@@ -1,5 +1,8 @@
 "use client";
-import Lottie from "lottie-react";
+
+import dynamic from "next/dynamic";
+// import Lottie from "lottie-react";
+const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 import EmptyWorkspace from "../../public/EmptyWorkspace.json";
 import {
   Sidebar,

@@ -1,5 +1,8 @@
 "use client";
-import Lottie from "lottie-react";
+
+import dynamic from "next/dynamic";
+// import Lottie from "lottie-react";
+const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 import Link from "next/link";
 import notfound from "../../public/notfound.json";
 import { ArrowLeftCircle } from "lucide-react";

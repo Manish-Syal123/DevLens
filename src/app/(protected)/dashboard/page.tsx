@@ -11,10 +11,12 @@ const InviteButton = dynamic(() => import("./invite-button"), { ssr: false });
 import TeamMembers from "./team-members";
 import { cn } from "@/lib/utils";
 import dynamic from "next/dynamic";
-import Lottie from "lottie-react";
+// import Lottie from "lottie-react";
+const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 import lottieworkspace from "../../../../public/lottieworkspace.json";
 import { Button } from "@/components/ui/button";
-import Loading from "../loading";
+// import Loading from "../loading";
+const Loading = dynamic(() => import("../loading"), { ssr: false });
 
 const DashboardPage = () => {
   const { project, isLoading } = useProject();
