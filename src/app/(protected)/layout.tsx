@@ -2,9 +2,9 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import { UserButton } from "@clerk/nextjs";
 import React, { Suspense } from "react";
 import { AppSidebar } from "./app-sidebar";
-import dynamic from "next/dynamic";
-// import Loading from "./loading";
-const Loading = dynamic(() => import("./loading"), { ssr: false });
+// import dynamic from "next/dynamic";
+import Loading from "./loading";
+// const Loading = dynamic(() => import("./loading"), { ssr: false });
 
 type Props = {
   children: React.ReactNode;

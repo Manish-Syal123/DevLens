@@ -7,9 +7,9 @@ import { type Metadata } from "next";
 import { TRPCReactProvider } from "@/trpc/react";
 import { Toaster } from "sonner";
 import { Suspense } from "react";
-import dynamic from "next/dynamic";
-// import Loading from "./loading";
-const Loading = dynamic(() => import("./loading"), { ssr: false });
+// import dynamic from "next/dynamic";
+import Loading from "./loading";
+// const Loading = dynamic(() => import("./loading"), { ssr: false });
 
 export const metadata: Metadata = {
   title: "DevLens 🔍",
