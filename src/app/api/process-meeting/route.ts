@@ -25,51 +25,53 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const { meetingUrl, projectId, meetingId } = bodyParser.parse(body);
     const { summaries } = await processMeeting(meetingUrl);
-    // await db.issue.createMany({
-    //   data: summaries.map((summary) => ({
-    //     start: summary.start,
-    //     end: summary.end,
-    //     gist: summary.gist,
-    //     headline: summary.headline,
-    //     summary: summary.summary,
-    //     meetingId,
-    //   })),
-    // });
 
-    // // updating the meeting status to processing & setting the name to the first headline
-    // await db.meeting.update({
-    //   where: {
-    //     id: meetingId,
-    //   },
-    //   data: {
-    //     status: "COMPLETED",
-    //     name: summaries[0]!.headline,
-    //   },
-    // });
+    await db.issue.createMany({
+      data: summaries.map((summary) => ({
+        start: summary.start,
+        end: summary.end,
+        gist: summary.gist,
+        headline: summary.headline,
+        summary: summary.summary,
+        meetingId,
+      })),
+    });
+
+    // updating the meeting status to processing & setting the name to the first headline
+    await db.meeting.update({
+      where: {
+        id: meetingId,
+      },
+      data: {
+        status: "COMPLETED",
+        name: summaries[0]!.headline,
+      },
+    });
+
     // Respond immediately
-    setTimeout(async () => {
-      // Run the process asynchronously
-      const { summaries } = await processMeeting(meetingUrl);
-      await db.issue.createMany({
-        data: summaries.map((summary) => ({
-          start: summary.start,
-          end: summary.end,
-          gist: summary.gist,
-          headline: summary.headline,
-          summary: summary.summary,
-          meetingId,
-        })),
-      });
+    // setTimeout(async () => {
+    //   // Run the process asynchronously
+    //   const { summaries } = await processMeeting(meetingUrl);
+    //   await db.issue.createMany({
+    //     data: summaries.map((summary) => ({
+    //       start: summary.start,
+    //       end: summary.end,
+    //       gist: summary.gist,
+    //       headline: summary.headline,
+    //       summary: summary.summary,
+    //       meetingId,
+    //     })),
+    //   });
 
-      // Update meeting status
-      await db.meeting.update({
-        where: { id: meetingId },
-        data: {
-          status: "COMPLETED",
-          name: summaries[0]!.headline,
-        },
-      });
-    }, 0);
+    //   // Update meeting status
+    //   await db.meeting.update({
+    //     where: { id: meetingId },
+    //     data: {
+    //       status: "COMPLETED",
+    //       name: summaries[0]!.headline,
+    //     },
+    //   });
+    // }, 0);
 
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (error) {
