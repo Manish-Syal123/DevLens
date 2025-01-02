@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 import React from "react";
 import { cn } from "@/lib/utils";
+import { useUser } from "@clerk/nextjs";
 
 const items = [
   {
@@ -56,6 +57,7 @@ const items = [
 
 export default function Home() {
   const [open, setOpen] = React.useState(false);
+  const { user, isSignedIn } = useUser();
   return (
     <div className="overflow-x-hidden">
       {/* Hero Section */}
@@ -169,13 +171,13 @@ export default function Home() {
               </div>
 
               <a
-                href="/dashboard"
+                href={isSignedIn ? "/dashboard" : "/sign-in"}
                 title=""
-                className="hidden items-center justify-center rounded-full bg-primary px-5 py-2.5 text-base font-semibold text-white transition-all duration-200 hover:bg-blue-600 focus:bg-yellow-300 focus:text-black lg:inline-flex"
+                className="hidden items-center justify-center rounded-full bg-primary px-5 py-2.5 text-base font-semibold text-white transition-all duration-200 hover:bg-blue-600 focus:bg-primary lg:inline-flex"
                 role="button"
               >
                 {" "}
-                Dashboard{" "}
+                {isSignedIn ? "Dashboard" : "Get Started"}
               </a>
             </div>
           </div>

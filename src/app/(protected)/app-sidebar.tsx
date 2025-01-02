@@ -66,7 +66,10 @@ export function AppSidebar() {
           {/* <Image src="/logwithname.png" alt="logo" width={100} height={100} /> */}
           <Image src="/logoSymbol.png" alt="logo" width={55} height={55} />
           {open && (
-            <h1 className="text-xl font-bold text-primary/80">DevLens</h1>
+            // <h1 className="text-xl font-bold text-primary/80">DevLens</h1>
+            <h1 className="bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-xl font-extrabold text-transparent">
+              DevLens
+            </h1>
           )}
         </div>
       </SidebarHeader>
