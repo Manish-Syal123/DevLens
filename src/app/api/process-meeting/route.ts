@@ -11,7 +11,8 @@ const bodyParser = z.object({
 });
 
 // when we deploy it on versel this function will timeout like after 10 seconds, to avoid that we set the maxDuration(timeout) to 5 minutes so the function won't timeout until 5 minutes
-export const maxDuration = 300; // 5 minutes
+// export const maxDuration = 300; // 5 minutes // can only be used in vercel pro/upgrade plan
+export const maxDuration = 60; // Maximum for the Hobby plan
 
 // /api/process-meeting
 export async function POST(req: NextRequest) {
@@ -24,27 +25,51 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const { meetingUrl, projectId, meetingId } = bodyParser.parse(body);
     const { summaries } = await processMeeting(meetingUrl);
-    await db.issue.createMany({
-      data: summaries.map((summary) => ({
-        start: summary.start,
-        end: summary.end,
-        gist: summary.gist,
-        headline: summary.headline,
-        summary: summary.summary,
-        meetingId,
-      })),
-    });
+    // await db.issue.createMany({
+    //   data: summaries.map((summary) => ({
+    //     start: summary.start,
+    //     end: summary.end,
+    //     gist: summary.gist,
+    //     headline: summary.headline,
+    //     summary: summary.summary,
+    //     meetingId,
+    //   })),
+    // });
 
-    // updating the meeting status to processing & setting the name to the first headline
-    await db.meeting.update({
-      where: {
-        id: meetingId,
-      },
-      data: {
-        status: "COMPLETED",
-        name: summaries[0]!.headline,
-      },
-    });
+    // // updating the meeting status to processing & setting the name to the first headline
+    // await db.meeting.update({
+    //   where: {
+    //     id: meetingId,
+    //   },
+    //   data: {
+    //     status: "COMPLETED",
+    //     name: summaries[0]!.headline,
+    //   },
+    // });
+    // Respond immediately
+    setTimeout(async () => {
+      // Run the process asynchronously
+      const { summaries } = await processMeeting(meetingUrl);
+      await db.issue.createMany({
+        data: summaries.map((summary) => ({
+          start: summary.start,
+          end: summary.end,
+          gist: summary.gist,
+          headline: summary.headline,
+          summary: summary.summary,
+          meetingId,
+        })),
+      });
+
+      // Update meeting status
+      await db.meeting.update({
+        where: { id: meetingId },
+        data: {
+          status: "COMPLETED",
+          name: summaries[0]!.headline,
+        },
+      });
+    }, 0);
 
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (error) {
