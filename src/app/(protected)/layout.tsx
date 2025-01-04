@@ -32,11 +32,9 @@ const SidebarLayout = ({ children }: Props) => {
           <div className="h-4"></div>
           {/* main content */}
           {/* overflow-y-scroll I removed from this right bellow div */}
-          <Suspense fallback={<Loading />}>
-            <div className="h-[calc(100vh-6rem)] overflow-y-scroll rounded-md border border-sidebar-border bg-sidebar p-4 shadow">
-              {children}
-            </div>
-          </Suspense>
+          <div className="h-[calc(100vh-6rem)] overflow-y-scroll rounded-md border border-sidebar-border bg-sidebar p-4 shadow">
+            <Suspense fallback={<Loading />}>{children}</Suspense>
+          </div>
         </main>
       </SidebarProvider>
     </Suspense>
