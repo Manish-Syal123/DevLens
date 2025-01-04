@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { createCheckoutSession } from "@/lib/stripe";
 import { api } from "@/trpc/react";
-import { Info } from "lucide-react";
+import { CreditCardIcon, Info } from "lucide-react";
 import React from "react";
 
 const BillingPage = () => {
@@ -12,6 +12,7 @@ const BillingPage = () => {
   const [creditsToBuy, setCreditsToBuy] = React.useState<number[]>([100]);
   const creditsToBuyAmmount = creditsToBuy[0]!;
   const price = (creditsToBuyAmmount / 50).toFixed(2);
+  const { data: paymentHistory } = api.project.getPaymentHistory.useQuery();
   return (
     <div>
       <h1 className="text-xl font-semibold">Billing</h1>
@@ -49,6 +50,37 @@ const BillingPage = () => {
       >
         Buy {creditsToBuyAmmount} credits for ${price}
       </Button>
+      <div className="h-4"></div>
+
+      {/* user payment history */}
+      <h1 className="text-xl font-semibold">Payment History</h1>
+      <div className="h-4"></div>
+      <ul className="divide-y divide-gray-200">
+        {paymentHistory?.map((payment) => (
+          <li
+            key={payment.id}
+            className="flex items-center justify-between gap-x-6 rounded-xl border px-4 py-3 shadow-md"
+          >
+            <div className="flex items-center gap-4">
+              <div className="rounded-full bg-green-200 p-2 text-green-600">
+                <CreditCardIcon className="size-6" />
+              </div>
+              <div>
+                <h1 className="text-lg font-bold">Credits Added</h1>
+                <span className="text-sm text-gray-500">
+                  {payment.createdAt.toLocaleDateString()}
+                </span>
+              </div>
+            </div>
+
+            <div>
+              <h1 className="flex items-center text-lg font-bold text-[#4c9464]">
+                + {payment.credits} credits
+              </h1>
+            </div>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };

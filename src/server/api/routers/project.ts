@@ -221,6 +221,16 @@ export const projectRouter = createTRPCRouter({
       });
       return { fileCount, userCredits: userCredits?.credits || 0 };
     }),
+  getPaymentHistory: protectedProcedure.query(async ({ ctx }) => {
+    return await ctx.db.stripeTransaction.findMany({
+      where: {
+        userId: ctx.user.userId!,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+  }),
 });
 
 // so this "protectedProcedure" is used to check if the user is authenticated or not
