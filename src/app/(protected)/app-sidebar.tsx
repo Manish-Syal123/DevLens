@@ -17,6 +17,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import useProject from "@/hooks/use-project";
 import { cn } from "@/lib/utils";
 import {
+  Archive,
   Bot,
   CreditCard,
   LayoutDashboard,
@@ -48,6 +49,11 @@ const items = [
     title: "Billing",
     url: "/billing",
     icon: CreditCard,
+  },
+  {
+    title: "Archive",
+    url: "/archive",
+    icon: Archive,
   },
 ];
 

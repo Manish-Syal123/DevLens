@@ -183,6 +183,15 @@ export const projectRouter = createTRPCRouter({
         },
       });
     }),
+  getArchivedProjects: protectedProcedure.query(async ({ ctx }) => {
+    return await ctx.db.project.findMany({
+      where: {
+        deletedAt: {
+          not: null,
+        },
+      },
+    });
+  }),
   getTeamMembers: protectedProcedure
     .input(z.object({ projectId: z.string() }))
     .query(async ({ ctx, input }) => {
@@ -231,6 +240,87 @@ export const projectRouter = createTRPCRouter({
       },
     });
   }),
+  deleteArchivedProject: protectedProcedure
+    .input(
+      z.object({
+        projectId: z.string().min(1, "Project ID is required"),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { projectId } = input;
+
+      // Verify the project exists and is archived
+      const project = await ctx.db.project.findUnique({
+        where: { id: projectId },
+      });
+
+      if (!project) {
+        throw new Error("Project not found");
+      }
+
+      if (!project.deletedAt) {
+        throw new Error("Project is not archived");
+      }
+
+      // Delete related records (e.g., UserToProject, Commits, SourceCodeEmbeddings, etc.)
+      await ctx.db.userToProject.deleteMany({
+        where: { projectId },
+      });
+
+      await ctx.db.commit.deleteMany({
+        where: { projectId },
+      });
+
+      await ctx.db.sourceCodeEmbedding.deleteMany({
+        where: { projectId },
+      });
+
+      await ctx.db.question.deleteMany({
+        where: { projectId },
+      });
+
+      await ctx.db.meeting.deleteMany({
+        where: { projectId },
+      });
+
+      // Finally, delete the project itself
+      await ctx.db.project.delete({
+        where: { id: projectId },
+      });
+
+      return { message: "Project deleted successfully" };
+    }),
+  restoreArchivedProject: protectedProcedure
+    .input(
+      z.object({
+        projectId: z.string().min(1, "Project ID is required"),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { projectId } = input;
+
+      // // Verify the project exists and is archived
+      // const project = await ctx.db.project.findUnique({
+      //   where: { id: projectId },
+      // });
+
+      // if (!project) {
+      //   throw new Error("Project not found");
+      // }
+
+      // if (project.deletedAt) {
+      //   throw new Error("Project is not archived");
+      // }
+
+      // Restore the project
+
+      return await ctx.db.project.update({
+        where: { id: projectId },
+        data: {
+          deletedAt: null,
+        },
+      });
+    }),
 });
 
 // so this "protectedProcedure" is used to check if the user is authenticated or not
